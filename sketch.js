@@ -17,7 +17,7 @@ function setup() {
 }
 
 function draw() {
-  background(10);
+  background(255);
 
   for (var i = 0; i < bouncables.length; i++) {
     bouncables[i].draw();
