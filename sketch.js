@@ -1,4 +1,5 @@
 var bouncables = [];
+var frequency = 0
 
 var setupScript = function() {};
 var drawScript = function() {};
