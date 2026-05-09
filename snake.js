@@ -11,9 +11,16 @@ const snakeHead = {
     sizeY: cellSize
 };
 
+const food = {
+    image: null,
+    positionX: null,
+    positionY: null,
+    sizeX: cellSize,
+    sizeY: cellSize
+}
+
 function drawHead() {
     angleMode(DEGREES);
-
     push();
     translate(snakeHead.positionX, snakeHead.positionY);
 
@@ -50,6 +57,14 @@ function drawGrid(){
 function drawSnake() {
    drawGrid();
 
+   image(
+        food.image,
+        cellSize * food.positionX,
+        cellSize * food.positionY,
+        food.sizeX,
+        food.sizeY
+   )
+
      if (snakeHead.direction === 'r') {
         snakeHead.positionX += cellSize;
     } else if (snakeHead.direction === 'l') {
@@ -59,6 +74,8 @@ function drawSnake() {
     } else if (snakeHead.direction === 'd') {
         snakeHead.positionY += cellSize;
     }
+
+
 
    drawHead();
 }
@@ -76,9 +93,23 @@ function keyPressedSnake() {
     }
 }
 
-  function setupSnake() {
-    snakeHead.direction = directionInitial;
+function getRandomFoodPosition() {
+    const countCellX = canvasX / cellSize;
+    const countCellY = canvasY / cellSize;
+
+    return {
+        x: Math.floor(Math.random() * countCellX) + 1,
+        y: Math.floor(Math.random() * countCellY) + 1
+    }
+}
+
+function setupSnake() {
+    food.image = loadImage('assets/Images/Food.webp')
+    food.positionX = getRandomFoodPosition().x;
+    food.positionY = getRandomFoodPosition().y;
+
     snakeHead.image = loadImage('assets/images/snake_head.png')
+    snakeHead.direction = directionInitial;
     snakeHead.positionX = cellSize * 2 + cellSize / 2;
     snakeHead.positionY = cellSize * 2 + cellSize / 2;
 } 
