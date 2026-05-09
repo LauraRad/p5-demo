@@ -1,21 +1,40 @@
+const directionInitial = 'r';
+
 const cellSize = 25;
 
 const snakeHead = {
+    direction: directionInitial,
     image: null,
-    positionX: 50,
-    positionY: 50,
-    sizeX: 25,
-    sizeY: 25,
+    positionX: null,
+    positionY: null,
+    sizeX: cellSize,
+    sizeY: cellSize
 };
 
 function drawHead() {
+    angleMode(DEGREES);
+
+    push();
+    translate(snakeHead.positionX, snakeHead.positionY);
+
+    if (snakeHead.direction === 'r') {
+        rotate(-90);
+    } else if (snakeHead.direction === 'l') {
+        rotate(90);
+    } else if (snakeHead.direction === 'u') {
+        rotate(180);
+    }
+    
+    imageMode(CENTER);
     image(
         snakeHead.image,
-        snakeHead.positionX,
-        snakeHead.positionY,
+        0,
+        0,
         snakeHead.sizeX,
         snakeHead.sizeY
-    );
+    )
+    pop();
+    angleMode(RADIANS);
 }
 
 function drawGrid(){
@@ -30,10 +49,36 @@ function drawGrid(){
 
 function drawSnake() {
    drawGrid();
+
+     if (snakeHead.direction === 'r') {
+        snakeHead.positionX += cellSize;
+    } else if (snakeHead.direction === 'l') {
+        snakeHead.positionX -= cellSize;
+    } else if (snakeHead.direction === 'u') {
+        snakeHead.positionY -= cellSize;
+    } else if (snakeHead.direction === 'd') {
+        snakeHead.positionY += cellSize;
+    }
+
    drawHead();
 }
 
-function setupSnake() {
-    snakeHead.image = loadImage('assets/images/snake_head.png')
+
+function keyPressedSnake() {
+    if (key === 'ArrowLeft' && snakeHead.direction !== 'r') {
+        snakeHead.direction = 'l';
+    } else if (key === 'ArrowRight' && snakeHead.direction !== 'l') {
+        snakeHead.direction = 'r';
+    } else if (key === 'ArrowUp' && snakeHead.direction !== 'd') {
+        snakeHead.direction = 'u';
+    } else if (key === 'ArrowDown' && snakeHead.direction !== 'u') {
+        snakeHead.direction = 'd';
+    }
 }
 
+  function setupSnake() {
+    snakeHead.direction = directionInitial;
+    snakeHead.image = loadImage('assets/images/snake_head.png')
+    snakeHead.positionX = cellSize * 2 + cellSize / 2;
+    snakeHead.positionY = cellSize * 2 + cellSize / 2;
+} 
